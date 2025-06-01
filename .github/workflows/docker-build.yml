@@ -1,0 +1,25 @@
+name: Build Docker Image
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: self-hosted  # 👈 use self-hosted Linux agent
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      run: |
+        docker build -t my-python-app:latest .
+
+    - name: Run container to verify
+      run: |
+        docker run -d -p 5000:5000 my-python-app:latest
+
